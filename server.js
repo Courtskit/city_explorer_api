@@ -21,36 +21,7 @@ app.use(cors());
 // bring in the PORT through process.env.variable name]
 const PORT = process.env.PORT || 3001;
 
-app.get('/', (request, response) => {
-  // will show in terminal
-  console.log('hello');
-  // will show in browser
-  response.send('I wanna go outside');
-})
-
-app.listen(PORT, () => {
-  console.log(`listening on ${PORT}`);
-})
-
-
-// //////////////
-// // notes from class
-
-// // express library sets up our server
-// const express = require('express');
-// // initializes express library into constant app
-// const app = express();
-
-// // dotenv lets us get our secrets from our .env file
-// require('dotenv').config();
-
-// // serve static files from public directory (if there was a public folder in your directories).. display these files instead of home route
-// app.use(express.static('./public'));
-
-// // bring in the PORT through process.env.variable name
-// const PORT = process.env.PORT || 3001;
-
-// // route
+// route
 // app.get('/', (request, response) => {
 //   // will show in terminal
 //   console.log('hello');
@@ -58,27 +29,28 @@ app.listen(PORT, () => {
 //   response.send('I wanna go outside');
 // })
 
-// // makes its own route called makingThisUp
-// // backend versions of event listeners
-// app.get('/makingThisUp', (request, response) => {
-//   console.log('Hey this is the public folder that doesnt exist but if it did this would work.');
-//   response.send(' so confuseed but this is public')
-// })
+app.get('/location', (request, response) => {
+  try {
+    let search_query = request.query.city;
+    let geoData = require('./data/location.json');
+    let returnObj = new Location(search_query, geoData[0]);
+    response.status(200).send(returnObj);
+  } catch (err) {
+    response.status(500).send('sorry, we messed up');
+  }
+})
 
-// // for routes that don't exist
-// app.get('*', (request, response) => {
-//   console.log('for routes that dont exist');
-//   response.status(404).send('This route does not exist.')
-// })
+function Location(searchQuery, obj) {
+  this.search_query = searchQuery;
+  this.formatted_query = obj.display_name;
+  this.latitude = obj.lat;
+  this.longitude = obj.lon;
+}
 
-// app.get('/location', (request, response) => {
-//   console.log(request.query.city);
-//   let searchQuery = request.query.city;
-// });
+app.get('*', (request, response) => {
+  response.status(404).send('Sorry, this is not a webpage');
+})
 
-
-// // turn on the lights - move into the house - start the server
-// app.listen(PORT, () => {
-//   console.log(`listening on ${PORT}`)
-// })
-
+app.listen(PORT, () => {
+  console.log(`listening on ${PORT}`);
+})
