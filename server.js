@@ -47,6 +47,34 @@ function Location(searchQuery, obj) {
   this.longitude = obj.lon;
 }
 
+app.get('/weather', (request, response) => {
+
+  try {
+
+    let weatherArr = [];
+
+    let weatherData = require('./data/weather.json');
+    weatherData.data.forEach(value => {
+      let weather = new Weather(value);
+      weatherArr.push(weather);
+    })
+
+    response.status(200).send(weatherArr);
+
+  } catch (err) {
+    response.status(500).send('sorry, we messed up');
+  }
+
+})
+
+
+// parameter are city and weather info
+function Weather(obj) {
+  this.forecast = obj.weather.description;
+  this.time = obj.datetime;
+}
+
+
 app.get('*', (request, response) => {
   response.status(404).send('Sorry, this is not a webpage');
 })
