@@ -25,16 +25,16 @@ Estimate of time needed to complete: 60 minutes
 
 Start time: 3:05PM
 
-Finish time: _____
+Finish time: 3:42PM
 
-Actual time needed to complete: _____
+Actual time needed to complete: 37 minutes
 _____________________________________
 
 Number and name of feature: Weather
 
 Estimate of time needed to complete: 60 minutes
 
-Start time: _____
+Start time: 3:45PM
 
 Finish time: _____
 
