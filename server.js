@@ -51,15 +51,14 @@ app.get('/weather', (request, response) => {
 
   try {
 
-    let weatherArr = [];
-
     let weatherData = require('./data/weather.json');
-    weatherData.data.forEach(value => {
+
+    let weatherDay = weatherData.data.map(value => {
       let weather = new Weather(value);
-      weatherArr.push(weather);
+      return weather;
     })
 
-    response.status(200).send(weatherArr);
+    response.status(200).send(weatherDay);
 
   } catch (err) {
     response.status(500).send('Sorry, something went wrong');
