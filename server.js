@@ -24,20 +24,15 @@ const PORT = process.env.PORT || 3001;
 // })
 
 app.get('/location', (request, response) => {
-  try {
-    let city = request.query.city;
+  let city = request.query.city;
+  let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEO_DATA_API_KEY}&q=${city}&format=json`;
 
-    let url = `GET https://us1.locationiq.com/v1/search.php?key=${process.env.GEO_DATA_API_KEY}&q=${city}&format=json`;
-
-    superagent.get(url)
-      .then(results => {
-        let finalObj = new Location(city, results.body[0]);
-        response.status(200).send(finalObj);
-      })
-
-  } catch (err) {
-    response.status(500).send('Sorry, something went wrong');
-  }
+  superagent.get(url)
+    .then(results => {
+      let finalObj = new Location(city, results.body[0]);
+      console.log(finalObj);
+      response.status(200).send(finalObj);
+    }).catch(err => console.log(err));
 })
 
 function Location(searchQuery, obj) {
@@ -78,7 +73,6 @@ function Weather(obj) {
   this.forecast = obj.weather.description;
   this.time = obj.datetime;
 }
-
 
 app.get('*', (request, response) => {
   response.status(404).send('Sorry, this is not a webpage');
