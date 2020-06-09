@@ -36,7 +36,7 @@ app.get('/location', (request, response) => {
     let returnObj = new Location(search_query, geoData[0]);
     response.status(200).send(returnObj);
   } catch (err) {
-    response.status(500).send('sorry, we messed up');
+    response.status(500).send('Sorry, something went wrong');
   }
 })
 
@@ -62,7 +62,7 @@ app.get('/weather', (request, response) => {
     response.status(200).send(weatherArr);
 
   } catch (err) {
-    response.status(500).send('sorry, we messed up');
+    response.status(500).send('Sorry, something went wrong');
   }
 
 })

@@ -36,20 +36,20 @@ Estimate of time needed to complete: 60 minutes
 
 Start time: 3:45PM
 
-Finish time: _____
+Finish time: 4:45PM
 
-Actual time needed to complete: _____
+Actual time needed to complete: 60 minutes 
 _____________________________________
 
 Number and name of feature: Errors
 
-Estimate of time needed to complete: 60 minutes
+Estimate of time needed to complete: 15 minutes
 
-Start time: _____
+Start time: 7:00pm
 
-Finish time: _____
+Finish time: 7:11pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 11min
 _____________________________________
 
 
