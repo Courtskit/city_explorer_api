@@ -97,12 +97,12 @@ function Hike(obj) {
   this.location = obj.location;
   this.length = obj.length;
   this.stars = obj.stars;
-  this.star_votes = obj.star_votes;
+  this.star_votes = obj.starVotes;
   this.summary = obj.summary;
-  this.trail_url = obj.trail_url;
+  this.trail_url = obj.url;
   this.conditions = obj.conditions;
-  this.condition_date = obj.condition_date;
-  this.condition_time = obj.condition_time;
+  this.condition_date = new Date(obj.conditionDate).toLocaleDateString();
+  this.condition_time = new Date(obj.conditionDate).toLocaleTimeString();
 }
 
 
