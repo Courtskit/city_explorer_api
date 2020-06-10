@@ -14,6 +14,16 @@ const PORT = process.env.PORT || 3001;
 
 
 app.get('/location', (request, response) => {
+  //  do the first client.query
+  // determine sql variable
+  // determine the safe value variable
+  //client.query
+  //.then 
+  //.then does it exist in database
+  //if so return to client
+  // if it does not
+  // in the else all superagent
+
   let city = request.query.city;
   let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEO_DATA_API_KEY}&q=${city}&format=json`;
 
@@ -22,6 +32,10 @@ app.get('/location', (request, response) => {
       let finalObj = new Location(city, results.body[0]);
       console.log(finalObj);
       response.status(200).send(finalObj);
+
+      // query insert --- send data to database
+      // before response 
+
     }).catch(err => console.log(err));
 })
 
@@ -90,7 +104,6 @@ function Hike(obj) {
   this.condition_date = obj.condition_date;
   this.condition_time = obj.condition_time;
 }
-
 
 
 app.get('*', (request, response) => {
