@@ -42,31 +42,38 @@ function Location(searchQuery, obj) {
   this.longitude = obj.lon;
 }
 
-app.get('/weather', (request, response) => {
-  try {
-    let weatherData = require('./data/weather.json');
-    let weatherDay = weatherData.data.map(value => {
-      let weather = new Weather(value);
-      return weather;
-    })
-    response.status(200).send(weatherDay);
-  } catch (err) {
-    response.status(500).send('Sorry, something went wrong');
-  }
-})
-
 // app.get('/weather', (request, response) => {
 //   try {
-//     let search_query = request.query.search_query;
-//     let url = `GET https://api.weatherbit.io/v2.0/current?city=${search_query}&key=${process.env.WEATHER_API_KEY}`;
-//     superagent.get(url)
-//       .then(results => {
-//         console.log(results.body);
-//       })
+//     let weatherData = require('./data/weather.json');
+//     let weatherDay = weatherData.data.map(value => {
+//       let weather = new Weather(value);
+//       return weather;
+//     })
+//     response.status(200).send(weatherDay);
 //   } catch (err) {
 //     response.status(500).send('Sorry, something went wrong');
 //   }
 // })
+
+app.get('/weather', (request, response) => {
+  try {
+    let search_query = request.query.search_query;
+    let url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${search_query}&key=${process.env.WEATHER_API_KEY}&days=8`;
+
+
+    superagent.get(url)
+      .then(results => {
+        let weatherResults = results.body.data.map(weatherResults => {
+          let day = new Weather(weatherResults);
+          return day;
+        });
+        response.status(200).send(weatherResults);
+      })
+
+  } catch (err) {
+    response.status(500).send('Sorry, something went wrong');
+  }
+})
 
 // parameter are city and weather info
 function Weather(obj) {
