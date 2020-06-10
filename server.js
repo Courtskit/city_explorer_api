@@ -12,16 +12,6 @@ const superagent = require('superagent');
 // bring in the PORT through process.env.variable name]
 const PORT = process.env.PORT || 3001;
 
-// app.get('/location', (request, response) => {
-//   try {
-//     let search_query = request.query.city;
-//     let geoData = require('./data/location.json');
-//     let returnObj = new Location(search_query, geoData[0]);
-//     response.status(200).send(returnObj);
-//   } catch (err) {
-//     response.status(500).send('Sorry, something went wrong');
-//   }
-// })
 
 app.get('/location', (request, response) => {
   let city = request.query.city;
@@ -42,24 +32,10 @@ function Location(searchQuery, obj) {
   this.longitude = obj.lon;
 }
 
-// app.get('/weather', (request, response) => {
-//   try {
-//     let weatherData = require('./data/weather.json');
-//     let weatherDay = weatherData.data.map(value => {
-//       let weather = new Weather(value);
-//       return weather;
-//     })
-//     response.status(200).send(weatherDay);
-//   } catch (err) {
-//     response.status(500).send('Sorry, something went wrong');
-//   }
-// })
-
 app.get('/weather', (request, response) => {
   try {
     let search_query = request.query.search_query;
     let url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${search_query}&key=${process.env.WEATHER_API_KEY}&days=8`;
-
 
     superagent.get(url)
       .then(results => {
@@ -80,6 +56,42 @@ function Weather(obj) {
   this.forecast = obj.weather.description;
   this.time = obj.datetime;
 }
+
+app.get('/trails', (request, response) => {
+  try {
+    let latitude = request.query.latitude;
+    let longitude = request.query.longitude;
+
+    let url = `https://www.hikingproject.com/data/get-trails?lat=${latitude}&lon=${longitude}&maxDistance=10&key=${process.env.TRAIL_APT_KEY}`;
+
+    superagent.get(url)
+      .then(results => {
+        let hikeResults = results.body.trails.map(hike => {
+          let trail = new Hike(hike);
+          return trail;
+        })
+        response.status(200).send(hikeResults);
+      })
+
+  } catch (err) {
+    response.status(500).send('Sorry, something went wrong');
+  }
+})
+
+function Hike(obj) {
+  this.name = obj.name;
+  this.location = obj.location;
+  this.length = obj.length;
+  this.stars = obj.stars;
+  this.star_votes = obj.star_votes;
+  this.summary = obj.summary;
+  this.trail_url = obj.trail_url;
+  this.conditions = obj.conditions;
+  this.condition_date = obj.condition_date;
+  this.condition_time = obj.condition_time;
+}
+
+
 
 app.get('*', (request, response) => {
   response.status(404).send('Sorry, this is not a webpage');

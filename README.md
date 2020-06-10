@@ -67,9 +67,19 @@ Estimate of time needed to complete: 35 minutes
 
 Start time: 3:20pm
 
+Finish time: 4:30pm
+
+Actual time needed to complete: approx. An hour and 10 minutes
+_____________________________________
+Number and name of feature: Trails 
+
+Estimate of time needed to complete: 60 minutes
+
+Start time: 6:25pm
+
 Finish time: 
 
-Actual time needed to complete: approx. 
+Actual time needed to complete: approx.
 _____________________________________
 
 
