@@ -1,11 +1,16 @@
 'use strict'
 
+// express - our server
 const express = require('express');
 const app = express();
+// pulls in secret keeper env file
 require('dotenv').config();
+// bring in the "bodyguard"
 const cors = require('cors');
 app.use(cors());
+// connects us to get data from APIs
 const superagent = require('superagent');
+// "phone line" connecting server to database
 const pg = require('pg');
 const client = new pg.Client(process.env.DATABASE_URL);
 client.on('error', err => console.error(err));
@@ -15,9 +20,10 @@ app.get('/location', (request, response) => {
   try {
     let city = request.query.city;
     let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEO_DATA_API_KEY}&q=${city}&format=json`;
-    let sqlQuery = 'SELECT * FROM locations WHERE search_query =$1;'
+    let sqlQuery = 'SELECT * FROM locations WHERE search_query LIKE ($1);'
     let safeValue = [city];
 
+    // we are the client.. query the database
     client.query(sqlQuery, safeValue)
       .then(sqlResults => {
         if (sqlResults.rowCount) {
