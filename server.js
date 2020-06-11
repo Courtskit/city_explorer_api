@@ -9,6 +9,11 @@ require('dotenv').config();
 const cors = require('cors');
 app.use(cors());
 const superagent = require('superagent');
+const pg = require('pg');
+
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', err => console.error(err));
+
 // bring in the PORT through process.env.variable name]
 const PORT = process.env.PORT || 3001;
 
@@ -17,10 +22,10 @@ app.get('/location', (request, response) => {
   //  do the first client.query
   // determine sql variable
   // determine the safe value variable
-  //client.query
-  //.then 
+  // client.query
+  //.then
   //.then does it exist in database
-  //if so return to client
+  // if so return to client
   // if it does not
   // in the else all superagent
 
@@ -37,7 +42,7 @@ app.get('/location', (request, response) => {
       // before response 
 
     }).catch(err => console.log(err));
-})
+});
 
 function Location(searchQuery, obj) {
   this.search_query = searchQuery;
@@ -58,12 +63,12 @@ app.get('/weather', (request, response) => {
           return day;
         });
         response.status(200).send(weatherResults);
-      })
+      });
 
   } catch (err) {
     response.status(500).send('Sorry, something went wrong');
   }
-})
+});
 
 // parameter are city and weather info
 function Weather(obj) {
@@ -83,14 +88,14 @@ app.get('/trails', (request, response) => {
         let hikeResults = results.body.trails.map(hike => {
           let trail = new Hike(hike);
           return trail;
-        })
+        });
         response.status(200).send(hikeResults);
-      })
+      });
 
   } catch (err) {
     response.status(500).send('Sorry, something went wrong');
   }
-})
+});
 
 function Hike(obj) {
   this.name = obj.name;
@@ -108,8 +113,15 @@ function Hike(obj) {
 
 app.get('*', (request, response) => {
   response.status(404).send('Sorry, this is not a webpage');
-})
+});
 
-app.listen(PORT, () => {
-  console.log(`listening on ${PORT}`);
-})
+// app.listen(PORT, () => {
+//   console.log(`listening on ${PORT}`);
+// })
+
+client.connect()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`listening on ${PORT}`);
+    });
+  });
