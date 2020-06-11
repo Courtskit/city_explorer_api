@@ -15,7 +15,7 @@ app.get('/location', (request, response) => {
   try {
     let city = request.query.city;
     let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEO_DATA_API_KEY}&q=${city}&format=json`;
-    let sqlQuery = 'SELECT * FROM locations WHERE search_query =$1;'
+    let sqlQuery = 'SELECT * FROM locations WHERE search_query LIKE ($1);'
     let safeValue = [city];
 
     client.query(sqlQuery, safeValue)
