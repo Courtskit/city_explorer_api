@@ -81,6 +81,26 @@ Finish time: 7:15pm
 
 Actual time needed to complete: approx. 50 minutes
 _____________________________________
+Number and name of feature: Database 
+
+Estimate of time needed to complete: 60 minutes
+
+Start time: 3:50pm
+
+Finish time: 5:00om
+
+Actual time needed to complete: approx. 70 minutes
+_____________________________________
+Number and name of feature: Server 
+
+Estimate of time needed to complete: 60 minutes
+
+Start time: 5:40pm
+
+Finish time: 
+
+Actual time needed to complete: approx. 
+_____________________________________
 
 
 ## Getting Started
