@@ -80,8 +80,8 @@ app.get('/trails', (request, response) => {
 
     superagent.get(url)
       .then(results => {
-        let hikeResults = results.body.trails.map(hike => {
-          let trail = new Hike(hike);
+        let hikeResults = results.body.trails.map(hiker => {
+          let trail = new Hike(hiker);
           return trail;
         });
         response.status(200).send(hikeResults);
@@ -123,7 +123,7 @@ function moviesHandler(request, response) {
       // console.log('results from superagent', data.body.results);
       let moviesArray = data.body.results;
       let allMovies = moviesArray.map(oneMovie => new Movie(oneMovie));
-      console.log(allMovies);
+      // console.log(allMovies);
       response.status(200).send(allMovies);
     }).catch();
 }
@@ -139,7 +139,39 @@ function Movie(obj) {
   this.released_on = obj.release_date;
 }
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////YELP//////////////////////////////////////
+app.get('/yelp', yelpHandler);
+
+function yelpHandler(request, response) {
+  let city = request.query.search_query;
+  let url = 'https://api.yelp.com/v3/businesses/search';
+
+  const queryParams = {
+    location: city,
+    term: 'food'
+  }
+
+  superagent.get(url)
+    .set('Authorization', `Bearer ${process.env.YELP_API_KEY}`)
+    .query(queryParams)
+    .then(data => {
+      let foodData = data.body.businesses;
+      let allRestuarants = foodData.map(food => new Restaurant(food));
+      // console.log('results from superagent', data.body);
+      response.status(200).send(allRestuarants);
+    })
+}
+
+// Yelp Restaurant Constructor Function
+function Restaurant(obj) {
+  this.name = obj.name;
+  this.image_url = obj.image_url;
+  this.price = obj.price;
+  this.rating = obj.rating;
+  this.url = obj.url;
+}
+
+/////////////////////////////////////////////////////////////////////////
 app.get('*', (request, response) => {
   response.status(404).send('Sorry, this is not a webpage');
 });
