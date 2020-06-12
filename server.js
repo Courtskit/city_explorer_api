@@ -104,26 +104,42 @@ function Hike(obj) {
   this.condition_date = new Date(obj.conditionDate).toLocaleDateString();
   this.condition_time = new Date(obj.conditionDate).toLocaleTimeString();
 }
-
+//////////////////////////////Movies/////////////////////////////////////
 app.get('/movies', moviesHandler);
 
 function moviesHandler(request, response) {
-  let city = request.query.city;
-  let url = 'https://api.themoviedb.org/3/movie/550';
+  let city = request.query.search_query;
+  let url = 'https://api.themoviedb.org/3/search/movie';
 
   const queryParams = {
-    key: process.env.MOVIE_API_KEY;
+    api_key: process.env.MOVIE_API_KEY,
+    query: city,
+    limit: 20
   }
 
   superagent.get(url)
     .query(queryParams)
     .then(data => {
-      console.log('results from superagent', data.body);
-    })
-};
+      // console.log('results from superagent', data.body.results);
+      let moviesArray = data.body.results;
+      let allMovies = moviesArray.map(oneMovie => new Movie(oneMovie));
+      console.log(allMovies);
+      response.status(200).send(allMovies);
+    }).catch();
+}
 
+// Movie Constructor Function
+function Movie(obj) {
+  this.title = obj.original_title;
+  this.overview = obj.overview;
+  this.average_votes = obj.vote_average;
+  this.total_votes = obj.vote_count;
+  this.image_url = `https://image.tmdb.org/t/p/w500/${obj.poster_path}`;
+  this.popularity = obj.popularity;
+  this.released_on = obj.release_date;
+}
 
-
+//////////////////////////////////////////////////////////////////////////////
 app.get('*', (request, response) => {
   response.status(404).send('Sorry, this is not a webpage');
 });
@@ -133,4 +149,4 @@ client.connect()
     app.listen(PORT, () => {
       console.log(`listening on ${PORT}`);
     });
-  });
+  })
