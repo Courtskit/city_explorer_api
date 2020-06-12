@@ -105,6 +105,25 @@ function Hike(obj) {
   this.condition_time = new Date(obj.conditionDate).toLocaleTimeString();
 }
 
+app.get('/movies', moviesHandler);
+
+function moviesHandler(request, response) {
+  let city = request.query.city;
+  let url = 'https://api.themoviedb.org/3/movie/550';
+
+  const queryParams = {
+    key: process.env.MOVIE_API_KEY;
+  }
+
+  superagent.get(url)
+    .query(queryParams)
+    .then(data => {
+      console.log('results from superagent', data.body);
+    })
+};
+
+
+
 app.get('*', (request, response) => {
   response.status(404).send('Sorry, this is not a webpage');
 });
